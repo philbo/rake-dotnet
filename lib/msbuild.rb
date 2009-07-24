@@ -3,16 +3,14 @@ module Rake
 		attr_accessor :src_dir, :verbosity, :working_dir
 	
 		def initialize(params={})
-			#TODO: Support for arbitrary properties, not just configuration. 
+			#TODO: Support for arbitrary properties, not just configuration.  For example, TreatWarningsAsErrors, WarningLevel.
 			@configuration = params[:configuration] || CONFIGURATION
 			@src_dir = params[:src_dir] || SRC_DIR
 			@verbosity = params[:verbosity] || MSBUILD_VERBOSITY || 'm'
 			@working_dir = params[:working_dir] || '.'
 			@deps = params[:deps] || []
             @buildable_projects = ['.csproj','.vbproj','.wixproj']
-			@treat_warnings_as_errors = params[:treat_warnings_as_errors] || true
-			@warning_level = params[:warning_level] || 4
-            @properties = {:Configuration => @configuration, :TreatWarningsAsErrors => @treat_warnings_as_errors, :WarningLevel => @warning_level, :BuildInParallel => true}.merge(params[:properties] || {})
+            @properties = {:Configuration => @configuration, :TreatWarningsAsErrors => true, :WarningLevel => 4, :BuildInParallel => true}.merge(params[:properties] || {})
 			
 			yield self if block_given?
 			define
